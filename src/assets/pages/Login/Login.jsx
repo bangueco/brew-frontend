@@ -37,12 +37,11 @@ const Login = () => {
     event.preventDefault()
     try {
       const data = new FormData(event.currentTarget)
-      const response = await login(data.get('username'), data.get('password'))
+      const auth = await login(data.get('username'), data.get('password'))
 
-      console.log(response)
-
+      return auth.token
     } catch(error) {
-      return error.data.message
+      console.log(error.response)
     }
   }
 
