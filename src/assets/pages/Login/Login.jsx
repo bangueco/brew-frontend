@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import login from '../../services/login'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const defaultTheme = createTheme({
   palette: {
@@ -39,7 +41,7 @@ const Login = () => {
       const data = new FormData(event.currentTarget)
       const auth = await login(data.get('username'), data.get('password'))
 
-      return auth.token
+      return localStorage.setItem('token', auth.token)
     } catch(error) {
       console.log(error.response)
     }
