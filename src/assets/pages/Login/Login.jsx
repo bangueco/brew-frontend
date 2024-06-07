@@ -35,6 +35,20 @@ const defaultTheme = createTheme({
 })
 
 const Login = () => {
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      navigate('/login', {replace: true})
+    } else {
+      navigate('/', {replace: true})
+    }
+    
+  }, [navigate])
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
