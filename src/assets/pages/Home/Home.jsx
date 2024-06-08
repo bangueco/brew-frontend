@@ -4,15 +4,22 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import getUserInfo from '../../services/user_info'
+import drinks from '../../services/drinks'
 
 const Home = () => {
 
   const navigate = useNavigate()
   const [authenticatedUser, setAuthenticatedUser] = useState({})
+  const [products, setProducts] = useState({})
 
   const getAuthenticatedUser = async () => {
     const user = await getUserInfo()
     return setAuthenticatedUser(user.userData)
+  }
+
+  const getDrinks = async () => {
+    const productDrinks = await drinks.getDrinks()
+    return setProducts(productDrinks)
   }
 
   useEffect(() => {
@@ -26,6 +33,10 @@ const Home = () => {
       navigate('/', {replace: true})
     }
   }, [navigate])
+
+  useEffect(() => {
+    getDrinks()
+  }, [])
 
   return(
     <>
