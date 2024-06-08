@@ -55,6 +55,7 @@ const Login = () => {
       const data = new FormData(event.currentTarget)
       const auth = await login(data.get('username'), data.get('password'))
 
+      navigate('/')
       return localStorage.setItem('token', auth.token)
     } catch(error) {
       console.log(error.response)
