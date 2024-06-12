@@ -1,9 +1,12 @@
 import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, Link, TextField, ThemeProvider, Typography, createTheme } from "@mui/material"
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import register from "../../services/register"
 
 const defaultTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: 'light',
     primary: {
       light: '#8E7155', // Lighter warm taupe
       main: '#6D503D', // Lighter deep espresso brown
@@ -21,13 +24,30 @@ const defaultTheme = createTheme({
 
 const Register = () => {
 
-  const handleSubmit = (event) => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      navigate('/register', {replace: true})
+    } else {
+      navigate('/', {replace: true})
+    }
+    
+  }, [navigate])
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    try {
+      const data = new FormData(event.currentTarget);
+      const credentials = await register(data.get('first_name'), data.get('last_name'), data.get('username'), data.get('password'))
+
+      if (credentials) navigate('/login')
+      
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return(
@@ -52,10 +72,10 @@ const Register = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="first_name"
                   required
                   fullWidth
-                  id="firstName"
+                  id="first_name"
                   label="First Name"
                   autoFocus
                 />
@@ -64,9 +84,9 @@ const Register = () => {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
+                  id="last_name"
                   label="Last Name"
-                  name="lastName"
+                  name="last_name"
                   autoComplete="family-name"
                 />
               </Grid>
@@ -74,10 +94,10 @@ const Register = () => {
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
                 />
               </Grid>
               <Grid item xs={12}>
