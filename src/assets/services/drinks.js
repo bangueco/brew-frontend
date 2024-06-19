@@ -8,4 +8,10 @@ const getDrinks = async () => {
   return response.data
 }
 
-export default { getDrinks }
+const createDrinks = async (name, price) => {
+  const response = await axios.post(baseURL, {name: name, price: price})
+
+  return response.data
+}
+
+export default { getDrinks, createDrinks }
